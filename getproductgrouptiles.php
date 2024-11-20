@@ -60,11 +60,10 @@ $under_construction_query = Capsule::table("tblproduct_group_features")
 $under_construction = array_column(array: $under_construction_query, column_key: "product_group_id");
 $apiresults = ["result" => "error", "message" => ERROR_UNHANDLED_EXCEPTION];
 
+if (empty($product_tiles))
+    $error = ERROR_PRODUCT_GROUPS_EMPTY;
+
 if (isset($error))
-    $apiresults = ["result" => "error", "message" => $error];
-elseif (empty($product_tiles))
-    $apiresults = ["result" => "error", "message" => ERROR_PRODUCT_GROUPS_EMPTY];
+    $apiresults["message"] = $error;
 else
     $apiresults = ["result" => "success", "tiles" => $product_tiles, "under_construction" => $under_construction];
-
-// array_map(function($T) {return $T->id;}, $product_tiles)

@@ -19,17 +19,19 @@ if (!defined("WHMCS"))
     
 
 $product_group_ids_capsule = Capsule::table("tblproductgroups")->get("id");
-$product_group_ids = array();
+$product_group_ids = [];
 
 // Normalise data such that IDs exist in a sequential array
 foreach ($product_group_ids_capsule as $product_group_id) {
     $product_group_ids[] = $product_group_id->id;
 }
 
-$apiresults = array("result" => "error", "message" => ERROR_UNHANDLED_EXCEPTION);
+$apiresults = ["result" => "error", "message" => ERROR_UNHANDLED_EXCEPTION];
 
 if (empty($product_group_ids))
-    $apiresults = array("result" => "error", "message" => ERROR_PRODUCT_GROUPS_EMPTY);
+    $error = ERROR_PRODUCT_GROUPS_EMPTY;
 
-    
-$apiresults = array("result" => "success", "gids" => $product_group_ids);
+if (isset($error))    
+    $apiresults['message'] = $error;
+else    
+    $apiresults = ["result" => "success", "gids" => $product_group_ids];

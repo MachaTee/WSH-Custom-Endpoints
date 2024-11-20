@@ -22,9 +22,13 @@ $product_group_features_response = Capsule::table("tblproduct_group_features")
                                           ->toArray();
 
 $product_group_features = array_column(array: $product_group_features_response, column_key: "feature");
-$apiresults = array("result" => "error", "message" => ERROR_UNHANDLED_EXCEPTION);
 
-if (!empty($product_group_features))
-    $apiresults = array("result" => "success", "features" => $product_group_features);
+$apiresults = ["result" => "error", "message" => ERROR_UNHANDLED_EXCEPTION];
+
+if (empty($product_group_features))
+    $error = ERROR_GROUP_FEATURES_EMPTY;
+
+if (isset($error))
+    $apiresults['message'] = $error;
 else
-    $apiresults = array("result" => "error", "message" => ERROR_GROUP_FEATURES_EMPTY);
+    $apiresults = ["result" => "success", "features" => $product_group_features];

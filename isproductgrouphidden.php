@@ -20,9 +20,12 @@ if (!defined("WHMCS"))
 
 $product_group_is_hidden = Capsule::table("tblproductgroups")->where("id", (string)$gid)->get("hidden")[0]->hidden;
 
-$apiresults = array("result" => "error", "message" => ERROR_UNHANDLED_EXCEPTION);
+$apiresults = ["result" => "error", "message" => ERROR_UNHANDLED_EXCEPTION];
 
 if (empty($product_group_is_hidden))
-    $apiresults = array("result" => "error", "message" => ERROR_PRODUCT_GROUPS_EMPTY);
+    $error = ERROR_PRODUCT_GROUPS_EMPTY;
 
-$apiresults = array("result" => "success", "hidden" => $product_group_is_hidden);
+if (isset($error))
+    $apiresults = ["results" => "error", "message" => $error];
+else
+    $apiresults = ["result" => "success", "hidden" => $product_group_is_hidden];
